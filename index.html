@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#123f38">
+  <title>Trailcraft: Plan the Path</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f2df;background:#123f38}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 15%,#2d6f61 0,transparent 34%),radial-gradient(circle at 85% 80%,#d7723b33 0,transparent 32%),#123f38}.card{width:min(680px,calc(100% - 32px));padding:38px;border:1px solid #ffffff24;border-radius:28px;background:#102f2bcc;box-shadow:0 30px 90px #0005;backdrop-filter:blur(16px)}.eyebrow{letter-spacing:.18em;text-transform:uppercase;color:#f0c84b;font-size:12px;font-weight:900}h1{margin:10px 0 8px;font-family:Georgia,serif;font-size:clamp(42px,9vw,78px);line-height:.88}p{color:#bdd0ca;line-height:1.6}.track{height:10px;margin:28px 0 12px;border-radius:999px;background:#ffffff18;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#e2773d,#f0c84b);transition:width .2s ease}.status{display:flex;justify-content:space-between;gap:18px;color:#dce8e4;font-size:13px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}button,a{appearance:none;border:0;border-radius:999px;padding:12px 18px;font:inherit;font-weight:800;cursor:pointer;text-decoration:none}button{color:#123f38;background:#f0c84b}a{color:#f7f2df;border:1px solid #ffffff42;background:#ffffff0c}.note{margin-top:20px;color:#8eaaa2;font-size:12px}.error{color:#ffd3c2}.leaf{position:fixed;width:240px;height:240px;border:28px solid #ffffff08;border-radius:64% 36% 70% 30%/45% 62% 38% 55%;transform:rotate(28deg);pointer-events:none}.leaf.a{left:-90px;top:-80px}.leaf.b{right:-90px;bottom:-80px;transform:rotate(210deg)}
+  </style>
+</head>
+<body>
+  <div class="leaf a"></div><div class="leaf b"></div>
+  <main class="card">
+    <div class="eyebrow">Sport Ireland trail-planning training game</div>
+    <h1>Trailcraft</h1>
+    <p>Reconstructing the self-contained React game in your browser. Once loaded, the game runs locally and does not call external services.</p>
+    <div class="track"><div class="bar" id="bar"></div></div>
+    <div class="status"><span id="status">Preparing trail maps…</span><strong id="percent">0%</strong></div>
+    <div class="actions">
+      <button id="retry" hidden>Try again</button>
+      <a href="#" id="source">Download React source</a>
+    </div>
+    <div class="note">Modern Chrome, Edge, Firefox or Safari is required.</div>
+  </main>
+<script>
+const GAME_PARTS=16,SOURCE_PARTS=9;
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,'0');
+function progress(done,total,label){const pct=Math.round(done/total*100);$('bar').style.width=pct+'%';$('percent').textContent=pct+'%';$('status').textContent=label}
+async function readParts(kind,count,onPart){let value='';for(let i=1;i<=count;i++){const response=await fetch(`data/${kind}-${pad(i)}.b64`,{cache:'force-cache'});if(!response.ok)throw new Error(`Could not load ${kind} part ${i}`);value+=(await response.text()).trim();onPart?.(i,count)}return value}
+function decodeBase64(value){const binary=atob(value);const bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);return bytes}
+async function gunzip(bytes){if(!('DecompressionStream'in window))throw new Error('This browser does not support local gzip decompression. Please use a current browser.');const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));return new Response(stream).text()}
+async function boot(){try{$('retry').hidden=true;progress(0,GAME_PARTS,'Loading trail country…');const encoded=await readParts('game',GAME_PARTS,(i,n)=>progress(i,n,`Loading game package ${i} of ${n}…`));progress(GAME_PARTS,GAME_PARTS,'Opening Trailcraft…');const html=await gunzip(decodeBase64(encoded));document.open();document.write(html);document.close()}catch(error){console.error(error);$('status').textContent=error.message;$('status').className='error';$('retry').hidden=false}}
+$('retry').addEventListener('click',boot);
+$('source').addEventListener('click',async event=>{event.preventDefault();const link=event.currentTarget;const original=link.textContent;try{link.textContent='Preparing source archive…';const encoded=await readParts('source',SOURCE_PARTS);const url=URL.createObjectURL(new Blob([decodeBase64(encoded)],{type:'application/gzip'}));const download=document.createElement('a');download.href=url;download.download='Trailcraft_React_Game_Source.tar.gz';document.body.appendChild(download);download.click();download.remove();setTimeout(()=>URL.revokeObjectURL(url),10000)}catch(error){alert(error.message)}finally{link.textContent=original}});
+boot();
+</script>
+</body>
+</html>
