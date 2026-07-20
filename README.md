@@ -1,40 +1,41 @@
-# Trailcraft: Plan the Path
+# Trailcraft: The Living Landscape
 
-A highly visual browser-based React learning game about planning sustainable recreational trails in Ireland.
+A non-linear browser strategy and simulation game about planning, building and managing sustainable recreational trails in Ireland.
 
 ## Play online
 
-The repository is ready for GitHub Pages. To publish it:
-
-1. Open **Settings → Pages**.
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select the `main` branch and the `/ (root)` folder, then save.
-
-The game will then be available at:
+Once GitHub Pages is enabled for the `main` branch and repository root, the game is available at:
 
 `https://andrewlinn957.github.io/trailcraft/`
 
-The first load reconstructs the self-contained game locally in the browser. No CDN or external runtime assets are used.
+## What changed
 
-## Source
+The original linear learning game has been replaced by a living-landscape simulation. The player now:
 
-Use the **Download React source** link on the loading page to download the complete Vite/React source archive.
+- chooses between three commissions with different users, budgets and definitions of success
+- explores a hand-drawn Irish landscape using ownership, ecology, slope and condition overlays
+- spends time and money surveying uncertain ground
+- draws, undoes and revises a route directly on the map
+- negotiates permissive access with farmers, landowners, forestry, heritage, waterways and commonage stakeholders
+- specifies surfaces, drainage, waymarking, gates, steps, interpretation and trailhead facilities section by section
+- opens the trail and operates it across ten seasonal turns covering five years
+- responds to storms, viral visitor surges, wildlife, access disputes, reviews and volunteer offers
+- inspects, repairs and adapts the trail as physical condition and relationships change
+- receives a final assessment against the seven connected dimensions of a sustainable trail
 
-The source includes:
+There is no single correct route. Decisions interact with target users, terrain, visitor demand, permissions, capital cost and future maintenance.
 
-- React application code and CSS
-- Vite configuration
-- package manifest and lockfile
-- production build script
-- source-to-training-material mapping
+## Technical structure
+
+The game is a static React application suitable for GitHub Pages. `index.html` loads the visual system and a compressed browser payload. No server, database or build step is required to play it.
 
 ## Content basis
 
-The learning content was adapted from:
+The game is an original educational adaptation of:
 
 - `Draft 2026 Trail Planning Slides.pptx`
 - `A Guide to Planning and Developing Recreational Trails in Ireland`
 
-The game follows the twelve-step sequence shown in the 2026 training deck. The guide's detailed material on users, landowner consultation, permissive access, heritage, safety, trail classes, management standards, route design and maintenance supplies the underlying rules and feedback.
+The source material informs the systems for target users, route choice, trail class and grade, access, landowner consultation, permissive access, heritage, safety, standards, carrying capacity, construction, monitoring and long-term maintenance.
 
-This is an original educational adaptation, not an official Sport Ireland accreditation or assessment tool.
+Trailcraft is not an official Sport Ireland accreditation, registration or assessment tool.
