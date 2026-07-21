@@ -1,13 +1,1 @@
-(async()=>{
-  const files=['src2-01.js','src2-02.js','src2-03.js','src2-04.js','src2-05.js','src2-06.js','src2-07.js','src2-08.js'];
-  const parts=await Promise.all(files.map(async file=>{
-    const response=await fetch(file,{cache:'no-cache'});
-    if(!response.ok) throw new Error(`Could not load ${file}`);
-    return response.text();
-  }));
-  (0,eval)(parts.join(''));
-})().catch(error=>{
-  const root=document.getElementById('root');
-  root.innerHTML=`<main style="max-width:700px;margin:4rem auto;padding:2rem;font-family:system-ui;color:#173f37"><h1>Trailcraft could not start</h1><p>${String(error.message||error)}</p><p>Reload the page or use a current browser.</p></main>`;
-  console.error(error);
-});
+(async()=>{const names=['data/v3-01.txt','data/v3-02.txt','data/v3-03.txt','data/v3-04.txt','data/v3-05.txt','data/v3-06.txt','data/v3-07.txt','data/v3-08.txt','data/v3-09.txt','data/v3-10.txt','data/v3-11.txt','data/v3-12.txt'];const parts=await Promise.all(names.map(x=>fetch(x,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Could not load '+x);return r.text()})));const raw=atob(parts.join(''));const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));const code=await new Response(stream).text();(0,eval)(code);})().catch(e=>{document.getElementById('root').innerHTML='<main style="padding:3rem;font-family:system-ui"><h1>Trailcraft could not start</h1><p>'+e.message+'</p><p>Refresh the page to retry.</p></main>';});
