@@ -1,0 +1,6 @@
+.node{touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.node .nodeHit{fill:transparent!important;stroke:transparent!important;stroke-width:0!important;pointer-events:all;transition:none!important;transform:none!important}
+.node circle:not(.nodeHit){fill:#fff8de;stroke:#173f37;stroke-width:3;transition:fill .14s ease,stroke .14s ease,stroke-width .14s ease,filter .14s ease;vector-effect:non-scaling-stroke;pointer-events:none;transform:none!important}
+.node:hover circle:not(.nodeHit),.node.selected circle:not(.nodeHit),.node:focus circle:not(.nodeHit),.node:focus-visible circle:not(.nodeHit){fill:#d3a746;stroke-width:5;filter:drop-shadow(0 0 4px rgba(23,63,55,.35));transform:none!important}
+.node.onRoute circle:not(.nodeHit){stroke:#d15c39;stroke-width:5}
+@media (hover:none){.node:hover circle:not(.nodeHit){filter:none}}
